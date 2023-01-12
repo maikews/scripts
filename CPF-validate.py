@@ -1,10 +1,41 @@
+from random import randint
+import os
 print('## Verificador de CPF validos ##')
-#cpf = input('Dígite o CPF sem os 2 últimos dígitos e caracteres especiais: ')
-cpf = '356465825'  # -31
 
 
-def verificador():
-    global cpf
+def menu():
+    while True:
+        print('1 - validar\n2 - gerar')
+        op = input('Dígite o número da opção desejada: ')
+        if op == '1':
+            os.system('cls') if os.name == 'nt' else os.system('clear')
+            cpf = str(input('Digite o CPF: '))
+            cpf = cpf.replace('.', '')
+            print(cpf)
+            if verificador(cpf[:9]) == cpf[-2:]:
+                print('VERDADEIRO!')
+            else:
+                print('FALSO!')
+        elif op == '2':
+            os.system('cls') if os.name == 'nt' else os.system('clear')
+            gerado = gerar()
+            verificado = verificador(gerado)
+            print(gerado[0:3] + '.' + gerado[3:6] + '.' + gerado[6:9] + '-' + gerado[9:10] + verificado)
+        else:
+            print('Digite um número do menu.')
+        input('Aperte qualquer tecla.')
+        os.system('cls') if os.name == 'nt' else os.system('clear')
+
+
+def gerar():
+    nine_dig = ''
+    for i in range(9):
+        dig = randint(0, 9)
+        nine_dig += str(dig)
+    return nine_dig
+
+
+def verificador(cpf):
     dig_verif = ''
     total = 0
     cont = 10
@@ -14,6 +45,7 @@ def verificador():
         total += sub_t
     total *= 10
     total %= 11
+    total = total if total <= 9 else 0
     dig_verif += str(total)
 
     ########################################
@@ -26,10 +58,10 @@ def verificador():
         total += sub_t
     total *= 10
     total %= 11
+    total = total if total <= 9 else 0
     dig_verif += str(total)
     return dig_verif
 
-cod = str(verificador())
-print(cod)
-cpf_inteiro = cpf[0:3] + '.' + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:10] + cod
-print(f'CPF: {cpf_inteiro}')
+
+if __name__ == '__main__':
+    menu()
